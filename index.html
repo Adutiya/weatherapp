@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weather app</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="card">
+<div class="search">
+    <input type="text" placeholder="enter city name" spellcheck="false">
+    <button><img src="pngtree-vector-search-icon-png-image_924820.jpg" alt=""></button>
+</div>
+<div class="weather">
+<img src="cloud5.png" class="weather-icon">
+<h1 class="temp">22°C</h1>
+<h2 class="city">Delhi</h2>
+<div class="details">
+    <div class="col">
+        <img src="humidity.png" >
+        <div>
+            <p class="humidity">50%</p>
+            <p>humidity</p>
+        </div>
+    </div>
+    <div class="col">
+        <img src="wind.png" >
+        <div>
+            <p class="wind">15km/hr</p>
+            <p>wind speed</p>
+        </div>
+    </div>
+</div>
+</div>
+
+</div>
+<script>
+const apikey = "f973252ac870c80e2f20fcfe0ceeb8f4";
+const apiurl ="https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+
+const searchbox = document.querySelector(".search input")
+const searchbtn = document.querySelector(".search button")
+const weathericon=document.querySelector(".weather-icon")
+
+
+async function checkWeather(city){
+    const response = await fetch(apiurl + city + `&appid=${apikey}`);
+    var data = await response.json();
+    console.log(data);
+
+    document.querySelector(".city").innerHTML= data.name;
+    document.querySelector(".temp").innerHTML= Math.floor(data.main.temp)+"°C";
+    document.querySelector(".humidity").innerHTML= data.main.humidity +"%";
+    document.querySelector(".wind").innerHTML= data.wind.speed+"km/hr";
+    if(data.weather[0].main =="clouds"){
+   weathericon.src ="cloud5.png";
+    }
+    else if(data.weather[0].main == "clear"){
+        weathericon.src="sunicon.png";
+    }
+    document.querySelector(".weather").style.display ="block"
+
+}
+
+searchbtn.addEventListener("click",()=>{
+    checkWeather(searchbox.value);
+})
+
+
+
+</script>
+
+
+</body>
+</html>
